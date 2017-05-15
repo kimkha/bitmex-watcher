@@ -1,0 +1,12 @@
+{
+  "name": "bitmex-watcher",
+  "version": "1.0.0",
+  "description": "Watcher tool for BitMEX trading",
+  "main": "index.js",
+  "repository": "https://github.com/kimkha/bitmex-watcher",
+  "author": "nkimkha@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "bitmex-realtime-api": "^0.0.2"
+  }
+}
