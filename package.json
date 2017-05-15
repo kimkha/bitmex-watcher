@@ -7,6 +7,7 @@
   "author": "nkimkha@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "bitmex-realtime-api": "^0.0.2"
+    "bitmex-realtime-api": "^0.0.2",
+    "node-notifier": "^5.1.2"
   }
 }
