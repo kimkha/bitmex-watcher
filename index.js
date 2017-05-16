@@ -12,7 +12,7 @@ client.on('close', () => console.log('Connection closed.'));
 client.on('initialize', () => console.log('Client initialized, data is flowing.'));
 
 let oldData = null;
-let oldTime = null;
+let lastData = null;
 
 chalkNum = (value, cond) => cond ? chalk.cyan(value) : chalk.magenta(value);
 
@@ -23,12 +23,11 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
     if (!oldData) {
       console.log(`Init data`);
       oldData = newData;
-      oldTime = +new Date(oldData['timestamp']);
-    } else {
+    } else if (newData[ 'midPrice' ] !== lastData[ 'midPrice' ]) {
       const newTime = +new Date(newData['timestamp']);
-      const delta = newTime - oldTime;
-      if (delta > 5000) {
-        // In short time: 10 seconds
+      const delta = newTime - (+new Date(lastData['timestamp']));
+      if (delta > 500) {
+        // In short time: 0.5 seconds
 
         const t = +new Date(oldData['timestamp']);
         const diff = (newData[ 'midPrice' ] - oldData[ 'midPrice' ]) / oldData[ 'midPrice' ];
@@ -53,10 +52,9 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
           // Too long to wait, just update price
           oldData = newData;
         }
-
-        oldTime = newTime;
       }
     }
+    lastData = newData;
   }
 });
 
