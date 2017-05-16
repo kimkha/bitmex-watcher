@@ -29,7 +29,7 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
 
         const t = +new Date(oldData['timestamp']);
         const diff = (newData[ 'midPrice' ] - oldData[ 'midPrice' ]) / oldData[ 'midPrice' ];
-        console.log(`Change: ${diff * 100} = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) / ${oldData[ 'midPrice' ]} at ${newData['timestamp']}`);
+        console.log(`Change: ${(diff * 100).toFixed(4)} = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) at ${newData['timestamp']}`);
         if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
