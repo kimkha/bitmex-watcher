@@ -27,18 +27,22 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
       if (delta > 10000) {
         // In short time: 10 seconds
 
-        const diff = Math.abs(oldData[ 'midPrice' ] - newData[ 'midPrice' ]) / oldData[ 'midPrice' ];
+        const diff = (oldData[ 'midPrice' ] - newData[ 'midPrice' ]) / oldData[ 'midPrice' ];
         console.log(`Change: ${diff} = (${oldData[ 'midPrice' ]} - ${newData[ 'midPrice' ]}) / ${oldData[ 'midPrice' ]}`);
-        if (diff > 0.005) {
+        if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
           const t = +new Date(oldData['timestamp']);
           if (newTime - t < 300000) {
-            console.warn(`Big change! Diff: ${(diff * 100).toFixed(2)}, new price: ${newData[ 'midPrice' ]}`);
-            notifier.notify(`Big change!`);
+            notifier.notify({
+              title: `Big change!`,
+              message: `Diff: ${(diff * 100).toFixed(2)}, new price: ${newData[ 'midPrice' ]}`
+            });
           } else {
-            console.warn(`Small change! Diff: ${(diff * 100).toFixed(2)}, new price: ${newData[ 'midPrice' ]}`);
-            notifier.notify(`Small change!`);
+            notifier.notify({
+              title: `Small change!`,
+              message: `Diff: ${(diff * 100).toFixed(2)}, new price: ${newData[ 'midPrice' ]}`
+            });
           }
           oldData = newData;
         }
