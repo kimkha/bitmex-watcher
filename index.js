@@ -1,4 +1,5 @@
 const notifier = require('node-notifier');
+const chalk = require('chalk');
 
 var BitMEXClient = require('bitmex-realtime-api');
 // See 'options' reference below
@@ -12,6 +13,8 @@ client.on('initialize', () => console.log('Client initialized, data is flowing.'
 
 let oldData = null;
 let oldTime = null;
+
+chalkNum = (value, cond) => cond ? chalk.cyan(value) : chalk.magenta(value);
 
 client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
   // console.log(`Got update for ${tableName}:${symbol}. Current state:\n${JSON.stringify(data)}...`);
@@ -29,8 +32,8 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
 
         const t = +new Date(oldData['timestamp']);
         const diff = (newData[ 'midPrice' ] - oldData[ 'midPrice' ]) / oldData[ 'midPrice' ];
-        const log = diff < 0 ? console.warn : console.log;
-        log(`Change: ${(diff * 100).toFixed(4)}% = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) at ${newData['timestamp']}`);
+        const c = diff >= 0;
+        console.log(`Change: ${chalkNum((diff * 100).toFixed(4), c)}% = (${chalkNum(newData[ 'midPrice' ], c)} - ${chalkNum(oldData[ 'midPrice' ], c)}) at ${newData['timestamp']}`);
         if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
