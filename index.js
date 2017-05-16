@@ -27,12 +27,12 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
       if (delta > 10000) {
         // In short time: 10 seconds
 
+        const t = +new Date(oldData['timestamp']);
         const diff = (newData[ 'midPrice' ] - oldData[ 'midPrice' ]) / oldData[ 'midPrice' ];
         console.log(`Change: ${diff} = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) / ${oldData[ 'midPrice' ]}`);
         if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
-          const t = +new Date(oldData['timestamp']);
           if (newTime - t < 300000) {
             notifier.notify({
               title: `Big change!`,
@@ -45,7 +45,7 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
             });
           }
           oldData = newData;
-        } else if (delta > 600000) {
+        } else if (newTime - t > 600000) {
           // Too long to wait, just update price
           oldData = newData;
         }
