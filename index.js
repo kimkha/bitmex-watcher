@@ -33,7 +33,7 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
         if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
-          if (newTime - t < 300000) {
+          if (newTime - t < 300000) { // 5 min
             notifier.notify({
               title: `Big change!`,
               message: `Diff: ${(diff * 100).toFixed(2)}, new price: ${newData[ 'midPrice' ]}`
@@ -45,7 +45,7 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
             });
           }
           oldData = newData;
-        } else if (newTime - t > 600000) {
+        } else if (newTime - t > 1200000) {// 20 min
           // Too long to wait, just update price
           oldData = newData;
         }
