@@ -24,12 +24,12 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
     } else {
       const newTime = +new Date(newData['timestamp']);
       const delta = newTime - oldTime;
-      if (delta > 10000) {
+      if (delta > 5000) {
         // In short time: 10 seconds
 
         const t = +new Date(oldData['timestamp']);
         const diff = (newData[ 'midPrice' ] - oldData[ 'midPrice' ]) / oldData[ 'midPrice' ];
-        console.log(`Change: ${diff} = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) / ${oldData[ 'midPrice' ]}`);
+        console.log(`Change: ${diff * 100} = (${newData[ 'midPrice' ]} - ${oldData[ 'midPrice' ]}) / ${oldData[ 'midPrice' ]} at ${newData['timestamp']}`);
         if (diff > 0.005 || diff < -0.005) {
           // Price change more than 5%
 
