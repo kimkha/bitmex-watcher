@@ -45,6 +45,9 @@ client.addStream('XBTUSD', 'instrument', function(data, symbol, tableName) {
             });
           }
           oldData = newData;
+        } else if (delta > 600000) {
+          // Too long to wait, just update price
+          oldData = newData;
         }
 
         oldTime = newTime;
